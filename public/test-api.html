@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test API Perpustakaan</h1>
+
+    <div class="test-section">
+        <h2>Test GET /api/buku</h2>
+        <button onclick="testGetBuku()">Test GET Buku</button>
+        <div id="result-buku" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test POST /api/buku</h2>
+        <button onclick="testPostBuku()">Test POST Buku</button>
+        <div id="result-post-buku" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test GET /api/siswa</h2>
+        <button onclick="testGetSiswa()">Test GET Siswa</button>
+        <div id="result-siswa" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test GET /api/kunjungan</h2>
+        <button onclick="testGetKunjungan()">Test GET Kunjungan</button>
+        <div id="result-kunjungan" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test GET /api/peminjaman</h2>
+        <button onclick="testGetPeminjaman()">Test GET Peminjaman</button>
+        <div id="result-peminjaman" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test GET /api/pengembalian</h2>
+        <button onclick="testGetPengembalian()">Test GET Pengembalian</button>
+        <div id="result-pengembalian" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test LocalStorage</h2>
+        <button onclick="testLocalStorage()">Test LocalStorage</button>
+        <div id="result-localstorage" class="result"></div>
+    </div>
+
+    <script>
+        async function testGetBuku() {
+            const resultDiv = document.getElementById('result-buku');
+            resultDiv.textContent = 'Loading...';
+            resultDiv.className = 'result';
+            
+            try {
+                const response = await fetch('/api/buku');
+                const data = await response.json();
+                
+                resultDiv.textContent = `Status: ${response.status}\n\nData:\n${JSON.stringify(data, null, 2)}`;
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        async function testPostBuku() {
+            const resultDiv = document.getElementById('result-post-buku');
+            resultDiv.textContent = 'Loading...';
+            resultDiv.className = 'result';
+            
+            const testData = {
+                judul: 'Test Buku ' + Date.now(),
+                pengarang: 'Test Author',
+                penerbit: 'Test Publisher',
+                tahun: 2024,
+                jenis: 'Fiksi',
+                rak: 'A1',
+                stok: 5,
+                sinopsis: 'Test sinopsis',
+                gambar: 'https://via.placeholder.com/150'
+            };
+            
+            try {
+                const response = await fetch('/api/buku', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                const data = await response.json();
+                
+                resultDiv.textContent = `Status: ${response.status}\n\nRequest:\n${JSON.stringify(testData, null, 2)}\n\nResponse:\n${JSON.stringify(data, null, 2)}`;
+                resultDiv.className = response.ok ? 'result success' : 'result error';
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        async function testGetSiswa() {
+            const resultDiv = document.getElementById('result-siswa');
+            resultDiv.textContent = 'Loading...';
+            resultDiv.className = 'result';
+            
+            try {
+                const response = await fetch('/api/siswa');
+                const data = await response.json();
+                
+                resultDiv.textContent = `Status: ${response.status}\n\nData:\n${JSON.stringify(data, null, 2)}`;
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        async function testGetKunjungan() {
+            const resultDiv = document.getElementById('result-kunjungan');
+            resultDiv.textContent = 'Loading...';
+            resultDiv.className = 'result';
+            
+            try {
+                const response = await fetch('/api/kunjungan');
+                const data = await response.json();
+                
+                resultDiv.textContent = `Status: ${response.status}\n\nData:\n${JSON.stringify(data, null, 2)}`;
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        async function testGetPeminjaman() {
+            const resultDiv = document.getElementById('result-peminjaman');
+            resultDiv.textContent = 'Loading...';
+            resultDiv.className = 'result';
+            
+            try {
+                const response = await fetch('/api/peminjaman');
+                const data = await response.json();
+                
+                resultDiv.textContent = `Status: ${response.status}\n\nData:\n${JSON.stringify(data, null, 2)}`;
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        async function testGetPengembalian() {
+            const resultDiv = document.getElementById('result-pengembalian');
+            resultDiv.textContent = 'Loading...';
+            resultDiv.className = 'result';
+            
+            try {
+                const response = await fetch('/api/pengembalian');
+                const data = await response.json();
+                
+                resultDiv.textContent = `Status: ${response.status}\n\nData:\n${JSON.stringify(data, null, 2)}`;
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        function testLocalStorage() {
+            const resultDiv = document.getElementById('result-localstorage');
+            
+            try {
+                // Test write
+                localStorage.setItem('testKey', 'testValue');
+                const value = localStorage.getItem('testKey');
+                
+                // Test userRole
+                localStorage.setItem('userRole', 'petugas');
+                const userRole = localStorage.getItem('userRole');
+                
+                resultDiv.textContent = `LocalStorage Test:\n\nTest Key: ${value}\nUser Role: ${userRole}\n\nAll localStorage items:\n${JSON.stringify(localStorage, null, 2)}`;
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        // Auto test on load
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('Page loaded, testing localStorage...');
+            const savedRole = localStorage.getItem('userRole');
+            console.log('Saved role:', savedRole);
+        });
+    </script>
+</body>
+</html>
+

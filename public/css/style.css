@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+.fade-in { animation: fadeIn 0.3s ease-in; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.book-card { transition: all 0.3s ease; }
+.book-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+.sidebar-item { transition: all 0.2s ease; }
+.sidebar-item:hover { background: rgba(59, 130, 246, 0.1); }
+.sidebar-item.active { background: #A1C7DF; color: black; }
+.app-body {
+  background: #cce6ff !important;
+  font-family: 'Inter', sans-serif !important;
+}
+/* Utility to hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+.icon-color {
+  color: #A1C7DF;
+}
+
+/* Normalisasi tampilan untuk input select dan date di semua browser */
+select,
+input[type="date"],
+input[type="datetime-local"] {
+  -webkit-appearance: none; /* Hapus gaya default di Chrome, Safari, Opera */
+  -moz-appearance: none;    /* Hapus gaya default di Firefox */
+  appearance: none;         /* Hapus gaya default secara standar */
+  background-color: #fff;   /* Pastikan background putih seperti input lain */
+}
+
+/* Tambahkan kembali ikon panah untuk select */
+select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+}
