@@ -21,7 +21,7 @@ jobs:
           port: ${{ secrets.PORT }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            BASE_DIR="/domains/perpustakaan.taro.web.id/public_html/"
+            BASE_DIR="/home/u955170694/domains/perpustakaan.taro.web.id/public_html/"
 
             echo "--- Deploying to $BASE_DIR (main) ---"
             cd "$BASE_DIR" || { echo "Error: Directory $BASE_DIR not found."; exit 1; }
