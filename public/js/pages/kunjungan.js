@@ -115,7 +115,7 @@ function renderKunjunganPage() {
             </div>
         </div>
     `;
-    
+
     document.getElementById('petugasContent').innerHTML = content;
     loadKunjunganTable();
     setupKunjunganForms();
@@ -126,7 +126,12 @@ async function loadKunjunganTable() {
     tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Memuat data...</td></tr>';
 
     try {
-        const response = await fetch('/api/kunjungan');
+        const response = await fetch('/api/kunjungan', {
+            headers: {
+                'Accept': 'application/json',
+                ...Auth.getAuthHeaders()
+            }
+        });
         if (!response.ok) throw new Error('Gagal memuat data kunjungan');
 
         const kunjungans = await response.json();
@@ -167,7 +172,7 @@ async function loadKunjunganTable() {
 function setupKunjunganForms() {
     const addForm = document.getElementById('addKunjunganForm');
     if (addForm) {
-        addForm.addEventListener('submit', async function(e) {
+        addForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const waktuValue = document.getElementById('addKunjunganWaktu').value;
@@ -186,7 +191,8 @@ function setupKunjunganForms() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        ...Auth.getAuthHeaders()
                     },
                     body: JSON.stringify(newVisit)
                 });
@@ -209,7 +215,7 @@ function setupKunjunganForms() {
         });
     }
 
-    document.getElementById('editKunjunganForm').addEventListener('submit', async function(e) {
+    document.getElementById('editKunjunganForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const id = parseInt(document.getElementById('editKunjunganIndex').value);
@@ -229,7 +235,8 @@ function setupKunjunganForms() {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
                 },
                 body: JSON.stringify(updatedVisit)
             });
@@ -257,7 +264,12 @@ function showAddKunjunganModal() {
 
 async function editKunjungan(id) {
     try {
-        const response = await fetch(`/api/kunjungan/${id}`);
+        const response = await fetch(`/api/kunjungan/${id}`, {
+            headers: {
+                'Accept': 'application/json',
+                ...Auth.getAuthHeaders()
+            }
+        });
         if (!response.ok) throw new Error('Gagal mengambil data kunjungan');
 
         const visit = await response.json();
@@ -283,7 +295,8 @@ async function deleteKunjungan(id) {
             const response = await fetch(`/api/kunjungan/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
                 }
             });
 

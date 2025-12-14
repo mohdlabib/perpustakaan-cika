@@ -124,7 +124,7 @@ function renderPeminjamanPage() {
             </div>
         </div>
     `;
-    
+
     document.getElementById('petugasContent').innerHTML = content;
     loadPeminjamanTable();
     setupPeminjamanForms();
@@ -135,7 +135,12 @@ async function loadPeminjamanTable() {
     tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">Memuat data...</td></tr>';
 
     try {
-        const response = await fetch('/api/peminjaman');
+        const response = await fetch('/api/peminjaman', {
+            headers: {
+                'Accept': 'application/json',
+                ...Auth.getAuthHeaders()
+            }
+        });
         if (!response.ok) throw new Error('Gagal memuat data peminjaman');
 
         const peminjamans = await response.json();
@@ -181,7 +186,7 @@ function setupPeminjamanForms() {
     document.getElementById('peminjamanDate').value = today;
     calculateDueDate();
 
-    document.getElementById('addPeminjamanForm').addEventListener('submit', async function(e) {
+    document.getElementById('addPeminjamanForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const bookInput = document.getElementById('peminjamanBookId').value;
@@ -194,7 +199,12 @@ function setupPeminjamanForms() {
 
         try {
             // Cari siswa berdasarkan nama
-            const siswaResponse = await fetch('/api/siswa');
+            const siswaResponse = await fetch('/api/siswa', {
+                headers: {
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
+                }
+            });
             const siswas = await siswaResponse.json();
             const siswa = siswas.find(s => s.nama === siswaName);
 
@@ -215,7 +225,8 @@ function setupPeminjamanForms() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
                 },
                 body: JSON.stringify(newPeminjaman)
             });
@@ -237,7 +248,7 @@ function setupPeminjamanForms() {
         }
     });
 
-    document.getElementById('editPeminjamanForm').addEventListener('submit', async function(e) {
+    document.getElementById('editPeminjamanForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const id = document.getElementById('editPeminjamanCode').value;
@@ -249,7 +260,12 @@ function setupPeminjamanForms() {
 
         try {
             // Cari siswa berdasarkan nama
-            const siswaResponse = await fetch('/api/siswa');
+            const siswaResponse = await fetch('/api/siswa', {
+                headers: {
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
+                }
+            });
             const siswas = await siswaResponse.json();
             const siswa = siswas.find(s => s.nama === siswaName);
 
@@ -270,7 +286,8 @@ function setupPeminjamanForms() {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
                 },
                 body: JSON.stringify(updatedPeminjaman)
             });
@@ -326,7 +343,12 @@ async function loadBorrowerOptions() {
     if (!datalist) return;
 
     try {
-        const response = await fetch('/api/siswa');
+        const response = await fetch('/api/siswa', {
+            headers: {
+                'Accept': 'application/json',
+                ...Auth.getAuthHeaders()
+            }
+        });
         const siswas = await response.json();
 
         datalist.innerHTML = '';
@@ -352,7 +374,7 @@ function showBookDetails() {
     const bookInput = document.getElementById('peminjamanBookId').value;
     const bookId = bookInput.split(' - ')[0]; // Ekstrak ID dari format "ID - Judul"
     const book = DataHelpers.getBookById(bookId);
-    
+
     if (book) {
         document.getElementById('bookDetails').classList.remove('hidden');
         document.getElementById('bookDetailsContent').innerHTML = `
@@ -390,7 +412,12 @@ function showAddPeminjamanModal() {
 
 async function editPeminjaman(id) {
     try {
-        const response = await fetch(`/api/peminjaman/${id}`);
+        const response = await fetch(`/api/peminjaman/${id}`, {
+            headers: {
+                'Accept': 'application/json',
+                ...Auth.getAuthHeaders()
+            }
+        });
         if (!response.ok) throw new Error('Gagal mengambil data peminjaman');
 
         const pinjam = await response.json();
@@ -432,7 +459,8 @@ async function deletePeminjaman(id) {
             const response = await fetch(`/api/peminjaman/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
                 }
             });
 

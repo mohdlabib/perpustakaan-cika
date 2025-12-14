@@ -170,7 +170,7 @@ function renderBukuPage() {
             </div>
         </div>
     `;
-    
+
     // Ganti id target sesuai dengan index.html kamu
     const target = document.getElementById('petugasContent') || document.getElementById('petugasContent');
     if (target) {
@@ -243,7 +243,7 @@ async function loadBooksTable() {
 function setupBookForms() {
     const addForm = document.getElementById('addBookForm');
     if (addForm) {
-        addForm.onsubmit = async function(e) {
+        addForm.onsubmit = async function (e) {
             e.preventDefault();
 
             const imageFile = document.getElementById('bookImage');
@@ -270,7 +270,8 @@ function setupBookForms() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        ...Auth.getAuthHeaders()
                     },
                     body: JSON.stringify(bookData)
                 });
@@ -293,7 +294,7 @@ function setupBookForms() {
 
     const editForm = document.getElementById('editBookForm');
     if (editForm) {
-        editForm.onsubmit = async function(e) {
+        editForm.onsubmit = async function (e) {
             e.preventDefault();
 
             const bookId = document.getElementById('editBookId').value;
@@ -326,7 +327,8 @@ function setupBookForms() {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        ...Auth.getAuthHeaders()
                     },
                     body: JSON.stringify(bookData)
                 });
@@ -416,7 +418,8 @@ async function deleteBook(bookId) {
             const response = await fetch(`/api/buku/${bookId}`, {
                 method: 'DELETE',
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
                 }
             });
 

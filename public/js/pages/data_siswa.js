@@ -121,7 +121,12 @@ async function loadSiswaTable() {
     tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4">Memuat data...</td></tr>';
 
     try {
-        const response = await fetch('/api/siswa');
+        const response = await fetch('/api/siswa', {
+            headers: {
+                'Accept': 'application/json',
+                ...Auth.getAuthHeaders()
+            }
+        });
         if (!response.ok) throw new Error('Gagal memuat data siswa');
 
         const siswas = await response.json();
@@ -161,7 +166,7 @@ function setupSiswaForms() {
     // Tambah siswa
     const addForm = document.getElementById('addSiswaForm');
     if (addForm) {
-        addForm.onsubmit = async function(e) {
+        addForm.onsubmit = async function (e) {
             e.preventDefault();
 
             const newSiswa = {
@@ -176,7 +181,8 @@ function setupSiswaForms() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        ...Auth.getAuthHeaders()
                     },
                     body: JSON.stringify(newSiswa)
                 });
@@ -202,7 +208,7 @@ function setupSiswaForms() {
     // Edit siswa
     const editForm = document.getElementById('editSiswaForm');
     if (editForm) {
-        editForm.onsubmit = async function(e) {
+        editForm.onsubmit = async function (e) {
             e.preventDefault();
 
             const id = parseInt(document.getElementById('editSiswaId').value);
@@ -218,7 +224,8 @@ function setupSiswaForms() {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        ...Auth.getAuthHeaders()
                     },
                     body: JSON.stringify(updatedSiswa)
                 });
@@ -257,7 +264,12 @@ function showAddSiswaModal() {
 
 async function editSiswa(id) {
     try {
-        const response = await fetch(`/api/siswa/${id}`);
+        const response = await fetch(`/api/siswa/${id}`, {
+            headers: {
+                'Accept': 'application/json',
+                ...Auth.getAuthHeaders()
+            }
+        });
         if (!response.ok) throw new Error('Gagal mengambil data siswa');
 
         const siswa = await response.json();
@@ -279,7 +291,8 @@ async function deleteSiswa(id) {
             const response = await fetch(`/api/siswa/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
                 }
             });
 

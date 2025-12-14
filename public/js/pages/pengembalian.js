@@ -101,7 +101,7 @@ function renderPengembalianPage() {
             </div>
         </div>
     `;
-    
+
     document.getElementById('petugasContent').innerHTML = content;
     loadPengembalianTable();
     setupPengembalianForms();
@@ -111,7 +111,12 @@ async function loadPengembalianTable() {
     tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">Memuat data...</td></tr>';
 
     try {
-        const response = await fetch('/api/pengembalian');
+        const response = await fetch('/api/pengembalian', {
+            headers: {
+                'Accept': 'application/json',
+                ...Auth.getAuthHeaders()
+            }
+        });
         if (!response.ok) throw new Error('Gagal memuat data pengembalian');
 
         const pengembalians = await response.json();
@@ -171,7 +176,7 @@ function setupPengembalianForms() {
         pengembalianDateInput.value = today;
     }
 
-    document.getElementById('addPengembalianForm').addEventListener('submit', async function(e) {
+    document.getElementById('addPengembalianForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const input = document.getElementById('pengembalianCode').value;
@@ -180,7 +185,12 @@ function setupPengembalianForms() {
 
         try {
             // Ambil data peminjaman untuk hitung denda
-            const peminjamanResponse = await fetch(`/api/peminjaman/${peminjamanId}`);
+            const peminjamanResponse = await fetch(`/api/peminjaman/${peminjamanId}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
+                }
+            });
             if (!peminjamanResponse.ok) {
                 alert('Peminjaman tidak ditemukan');
                 return;
@@ -210,7 +220,8 @@ function setupPengembalianForms() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
                 },
                 body: JSON.stringify(newPengembalian)
             });
@@ -232,7 +243,7 @@ function setupPengembalianForms() {
         }
     });
 
-    document.getElementById('editPengembalianForm').addEventListener('submit', async function(e) {
+    document.getElementById('editPengembalianForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const id = document.getElementById('editPengembalianCode').value;
@@ -240,7 +251,12 @@ function setupPengembalianForms() {
 
         try {
             // Ambil data pengembalian untuk mendapatkan peminjaman_id
-            const pengembalianResponse = await fetch(`/api/pengembalian/${id}`);
+            const pengembalianResponse = await fetch(`/api/pengembalian/${id}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
+                }
+            });
             if (!pengembalianResponse.ok) {
                 alert('Pengembalian tidak ditemukan');
                 return;
@@ -269,7 +285,8 @@ function setupPengembalianForms() {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
                 },
                 body: JSON.stringify(updatedPengembalian)
             });
@@ -296,7 +313,12 @@ async function loadPengembalianOptions() {
     if (!datalist) return;
 
     try {
-        const response = await fetch('/api/peminjaman');
+        const response = await fetch('/api/peminjaman', {
+            headers: {
+                'Accept': 'application/json',
+                ...Auth.getAuthHeaders()
+            }
+        });
         const peminjamans = await response.json();
 
         datalist.innerHTML = '';
@@ -315,7 +337,12 @@ async function showPeminjamanDetails() {
     const peminjamanId = input.split(' - ')[0]; // Ekstrak ID dari format "ID - Nama"
 
     try {
-        const response = await fetch(`/api/peminjaman/${peminjamanId}`);
+        const response = await fetch(`/api/peminjaman/${peminjamanId}`, {
+            headers: {
+                'Accept': 'application/json',
+                ...Auth.getAuthHeaders()
+            }
+        });
         if (!response.ok) {
             document.getElementById('peminjamanDetails').classList.add('hidden');
             document.getElementById('dendaInfo').classList.add('hidden');
@@ -350,7 +377,12 @@ async function calculateDenda() {
     if (!returnDate) return;
 
     try {
-        const response = await fetch(`/api/peminjaman/${peminjamanId}`);
+        const response = await fetch(`/api/peminjaman/${peminjamanId}`, {
+            headers: {
+                'Accept': 'application/json',
+                ...Auth.getAuthHeaders()
+            }
+        });
         if (!response.ok) return;
 
         const pinjam = await response.json();
@@ -386,7 +418,12 @@ function showAddPengembalianModal() {
 
 async function editPengembalian(id) {
     try {
-        const response = await fetch(`/api/pengembalian/${id}`);
+        const response = await fetch(`/api/pengembalian/${id}`, {
+            headers: {
+                'Accept': 'application/json',
+                ...Auth.getAuthHeaders()
+            }
+        });
         if (!response.ok) throw new Error('Gagal mengambil data pengembalian');
 
         const kembali = await response.json();
@@ -408,7 +445,8 @@ async function deletePengembalian(id) {
             const response = await fetch(`/api/pengembalian/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    ...Auth.getAuthHeaders()
                 }
             });
 
