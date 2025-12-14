@@ -53,7 +53,10 @@ class SiswaSeeder extends Seeder
         ];
 
         foreach ($siswas as $siswa) {
-            Siswa::create($siswa);
+            Siswa::firstOrCreate(
+                ['nis' => $siswa['nis']],
+                $siswa
+            );
         }
     }
 }

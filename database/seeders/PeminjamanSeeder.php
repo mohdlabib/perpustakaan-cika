@@ -38,7 +38,10 @@ class PeminjamanSeeder extends Seeder
         ];
 
         foreach ($peminjamans as $peminjaman) {
-            Peminjaman::create($peminjaman);
+            Peminjaman::firstOrCreate(
+                ['siswa_id' => $peminjaman['siswa_id'], 'buku_id' => $peminjaman['buku_id'], 'tanggal_peminjaman' => $peminjaman['tanggal_peminjaman']],
+                $peminjaman
+            );
         }
     }
 }

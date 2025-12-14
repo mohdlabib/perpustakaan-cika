@@ -50,7 +50,10 @@ class BukuSeeder extends Seeder
         ];
 
         foreach ($bukus as $buku) {
-            Buku::create($buku);
+            Buku::firstOrCreate(
+                ['judul' => $buku['judul'], 'pengarang' => $buku['pengarang']],
+                $buku
+            );
         }
     }
 }

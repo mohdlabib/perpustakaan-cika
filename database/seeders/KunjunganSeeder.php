@@ -41,7 +41,10 @@ class KunjunganSeeder extends Seeder
         ];
 
         foreach ($kunjungans as $kunjungan) {
-            Kunjungan::create($kunjungan);
+            Kunjungan::firstOrCreate(
+                ['nis' => $kunjungan['nis'], 'tanggal_kunjungan' => $kunjungan['tanggal_kunjungan'], 'jam_masuk' => $kunjungan['jam_masuk']],
+                $kunjungan
+            );
         }
     }
 }

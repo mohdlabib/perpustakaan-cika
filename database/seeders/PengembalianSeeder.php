@@ -23,7 +23,10 @@ class PengembalianSeeder extends Seeder
         ];
 
         foreach ($pengembalians as $pengembalian) {
-            Pengembalian::create($pengembalian);
+            Pengembalian::firstOrCreate(
+                ['peminjaman_id' => $pengembalian['peminjaman_id']],
+                $pengembalian
+            );
         }
     }
 }
