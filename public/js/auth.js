@@ -45,6 +45,7 @@ const Auth = {
       this.token = data.data.token;
       this.currentRole = 'petugas';
 
+      console.log('Login successful, token stored');
       return { success: true };
     } catch (error) {
       console.error('Login error:', error);
@@ -125,18 +126,24 @@ const Auth = {
   restoreSession() {
     const savedRole = localStorage.getItem('userRole');
     const savedToken = localStorage.getItem('authToken');
-    
-    if (savedRole) {
+
+    // For petugas role, require a valid token
+    if (savedRole === 'petugas') {
+      if (!savedToken) {
+        // No token found, clear session and require re-login
+        console.log('Petugas session without token, requiring re-login');
+        localStorage.removeItem('userRole');
+        return;
+      }
       this.currentRole = savedRole;
       this.token = savedToken;
+      this.login(savedRole);
+    } else if (savedRole === 'siswa') {
+      // Siswa doesn't need token
+      this.currentRole = savedRole;
       this.login(savedRole);
     }
   }
 };
-
-// Restore session saat halaman dimuat
-document.addEventListener('DOMContentLoaded', function() {
-  Auth.restoreSession();
-});
 
 window.Auth = Auth;
