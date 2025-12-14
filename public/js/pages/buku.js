@@ -266,12 +266,16 @@ function setupBookForms() {
             };
 
             try {
+                const authHeaders = Auth.getAuthHeaders();
+                console.log('Auth headers for save book:', authHeaders);
+                console.log('Token from localStorage:', localStorage.getItem('authToken'));
+
                 const response = await fetch('/api/buku', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        ...Auth.getAuthHeaders()
+                        ...authHeaders
                     },
                     body: JSON.stringify(bookData)
                 });

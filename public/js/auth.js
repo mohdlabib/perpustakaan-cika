@@ -20,6 +20,7 @@ const Auth = {
 
   // Login as petugas (calls real API)
   async loginPetugas(password) {
+    console.log('Attempting login with password:', password ? '***' : '(empty)');
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
@@ -33,19 +34,26 @@ const Auth = {
         })
       });
 
+      console.log('Login response status:', response.status);
       const data = await response.json();
+      console.log('Login response data:', data);
 
       if (!response.ok) {
         return { success: false, message: data.message || 'Login gagal' };
       }
 
       // Store token and role
-      localStorage.setItem('authToken', data.data.token);
+      const token = data.data.token;
+      console.log('Token received:', token ? 'Yes (length: ' + token.length + ')' : 'No');
+
+      localStorage.setItem('authToken', token);
       localStorage.setItem('userRole', 'petugas');
-      this.token = data.data.token;
+      this.token = token;
       this.currentRole = 'petugas';
 
-      console.log('Login successful, token stored');
+      console.log('Login successful, token stored in localStorage');
+      console.log('Verify stored token:', localStorage.getItem('authToken') ? 'Yes' : 'No');
+
       return { success: true };
     } catch (error) {
       console.error('Login error:', error);
